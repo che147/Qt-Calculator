@@ -1,0 +1,16 @@
+# Qt 构建产物
+build/
+*.o
+moc_*
+ui_mainwindow.h
+qrc_*
+
+# Qt Creator 用户配置（每个人不同，不入库）
+*.pro.user
+*.pro.user.*
+
+# IDE / 系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

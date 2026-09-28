@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>计算器</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* ===== 计算器全局样式表 ===== */
+QMainWindow {
+    background-color: #f3f3f3;
+}
+QLabel#labelExpression {
+    color: #8a8a8a;
+    font-size: 12pt;
+}
+QLineEdit#lineEditDisplay {
+    background: transparent;
+    border: none;
+    color: #1b1b1b;
+    font-size: 30pt;
+    font-weight: 600;
+}
+/* 数字键 */
+QPushButton[buttonRole="digit"] {
+    background-color: #ffffff;
+    border: 1px solid #ececec;
+    border-radius: 6px;
+    font-size: 16pt;
+    color: #1b1b1b;
+}
+QPushButton[buttonRole="digit"]:hover  { background-color: #f0f4ff; }
+QPushButton[buttonRole="digit"]:pressed{ background-color: #dfe8ff; }
+/* 功能键（C ⌫ % ±） */
+QPushButton[buttonRole="func"] {
+    background-color: #e9edf2;
+    border: 1px solid #e0e4ea;
+    border-radius: 6px;
+    font-size: 15pt;
+    color: #2b2b2b;
+}
+QPushButton[buttonRole="func"]:hover  { background-color: #dde3ec; }
+QPushButton[buttonRole="func"]:pressed{ background-color: #ccd4e0; }
+/* 运算符键（÷ × − +） */
+QPushButton[buttonRole="op"] {
+    background-color: #eef3fb;
+    border: 1px solid #dfe8f5;
+    border-radius: 6px;
+    font-size: 17pt;
+    color: #1a66d6;
+}
+QPushButton[buttonRole="op"]:hover  { background-color: #e0eaf9; }
+QPushButton[buttonRole="op"]:pressed{ background-color: #cddcf3; }
+/* 等号键 */
+QPushButton[buttonRole="equals"] {
+    background-color: #2f6fdb;
+    border: none;
+    border-radius: 6px;
+    font-size: 17pt;
+    color: #ffffff;
+}
+QPushButton[buttonRole="equals"]:hover  { background-color: #2a63c4; }
+QPushButton[buttonRole="equals"]:pressed{ background-color: #2457ae; }</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="mainLayout">
+    <property name="leftMargin">
+     <number>12</number>
+    </property>
+    <property name="topMargin">
+     <number>12</number>
+    </property>
+    <property name="rightMargin">
+     <number>12</number>
+    </property>
+    <property name="bottomMargin">
+     <number>12</number>
+    </property>
+    <property name="spacing">
+     <number>10</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="labelExpression">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="lineEditDisplay">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>70</height>
+       </size>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignVCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="text">
+       <string>0</string>
+      </property>
+      <property name="frame">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btnClear">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>C</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>func</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="btnBackspace">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>⌫</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>func</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btnPercent">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>%</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>func</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QPushButton" name="btnDivide">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>÷</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>op</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btn7">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>7</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btn8">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>8</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="btn9">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>9</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="btnMultiply">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>×</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>op</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="btn4">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>4</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="btn5">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>5</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="btn6">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>6</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QPushButton" name="btnMinus">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>−</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>op</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="btn1">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>1</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="btn2">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>2</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QPushButton" name="btn3">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>3</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="btnPlus">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>op</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="btnSign">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>±</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>func</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QPushButton" name="btn0">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QPushButton" name="btnDot">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>.</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>digit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QPushButton" name="btnEquals">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>=</string>
+        </property>
+        <property name="buttonRole" stdset="0">
+         <string>equals</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
