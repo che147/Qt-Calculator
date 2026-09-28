@@ -37,6 +37,42 @@ void MainWindow::onButtonClicked()
     processKey(btn->text());
 }
 
+// ==================== 键盘入口 ====================
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    QString key;
+    switch (event->key()) {
+    case Qt::Key_0: key = "0"; break;
+    case Qt::Key_1: key = "1"; break;
+    case Qt::Key_2: key = "2"; break;
+    case Qt::Key_3: key = "3"; break;
+    case Qt::Key_4: key = "4"; break;
+    case Qt::Key_5: key = "5"; break;
+    case Qt::Key_6: key = "6"; break;
+    case Qt::Key_7: key = "7"; break;
+    case Qt::Key_8: key = "8"; break;
+    case Qt::Key_9: key = "9"; break;
+    case Qt::Key_Period:
+    case Qt::Key_Comma:        key = ".";  break;   // 小数点（含小键盘 . 和部分键盘的 ,）
+    case Qt::Key_Plus:         key = "+";  break;
+    case Qt::Key_Minus:        key = "-";  break;
+    case Qt::Key_Asterisk:     key = "×"; break;   // 键盘 * 统一映射为 ×
+    case Qt::Key_Slash:        key = "÷"; break;   // 键盘 / 统一映射为 ÷
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+    case Qt::Key_Equal:        key = "=";  break;   // 回车 / = 都等于按下"="
+    case Qt::Key_Backspace:    key = "⌫"; break;
+    case Qt::Key_Escape:
+    case Qt::Key_Delete:       key = "C";  break;   // Esc / Del 都等于按下"C"
+    case Qt::Key_Percent:      key = "%";  break;
+    default:
+        QMainWindow::keyPressEvent(event);           // 其余按键交给基类
+        return;
+    }
+    processKey(key);                                 // 与鼠标点击复用同一套处理逻辑
+}
+
 // ==================== 统一处理逻辑 ====================
 
 void MainWindow::processKey(const QString &key)

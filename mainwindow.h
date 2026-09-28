@@ -8,6 +8,7 @@ namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 class QPushButton;
+class QKeyEvent;
 
 /**
  * @brief 带键盘事件的计算器
