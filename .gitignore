@@ -1,6 +1,9 @@
 # Qt 构建产物
 build/
+build-debug/
+build-release/
 *.o
+*.exe
 moc_*
 ui_mainwindow.h
 qrc_*
