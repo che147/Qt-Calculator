@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QKeyEvent>
 #include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -82,6 +83,16 @@ void MainWindow::processKey(const QString &key)
 
     if (normalized == "C")  { clearAll(); return; }
 
+    // 错误状态下（如除零），只有"清除"或重新输入数字可以恢复
+    if (m_errorState) {
+        if (normalized == "0" || normalized == "1" || normalized == "2" || normalized == "3" ||
+            normalized == "4" || normalized == "5" || normalized == "6" || normalized == "7" ||
+            normalized == "8" || normalized == "9")
+            clearAll();
+        else
+            return;
+    }
+
     if      (normalized == "+") inputOperator("+");
     else if (normalized == "-") inputOperator("-");
     else if (normalized == "×") inputOperator("×");
@@ -149,6 +160,10 @@ void MainWindow::inputOperator(const QString &op)
     // 情况 2：已有待运算的操作符且第二个操作数已输入，先算出中间结果（连续运算）
     if (!m_pendingOperator.isEmpty() && !m_currentInput.isEmpty()) {
         double second = currentValue();
+        if (m_pendingOperator == "÷" && second == 0.0) {
+            showError(QStringLiteral("除数不能为零"));
+            return;
+        }
         double a = m_firstOperand;
         if      (m_pendingOperator == "+") m_firstOperand = a + second;
         else if (m_pendingOperator == "-") m_firstOperand = a - second;
@@ -192,7 +207,8 @@ void MainWindow::calculate()
 
 void MainWindow::backspace()
 {
-    // 刚出结果后退格无效（避免改动一个"已经算完"的数）
+    // 错误状态下退格等同清除；刚出结果后退格无效（避免改动一个"已经算完"的数）
+    if (m_errorState) { clearAll(); return; }
     if (m_justEvaluated || m_currentInput.isEmpty())
         return;
 
@@ -208,12 +224,15 @@ void MainWindow::clearAll()
     m_pendingOperator.clear();
     m_currentInput.clear();
     m_justEvaluated   = false;
+    m_errorState      = false;
     ui->labelExpression->clear();
     updateDisplay();
 }
 
 void MainWindow::toggleSign()
 {
+    if (m_errorState)
+        return;
     if (m_currentInput.isEmpty() || m_currentInput == "0")
         return;
 
@@ -226,7 +245,7 @@ void MainWindow::toggleSign()
 
 void MainWindow::applyPercent()
 {
-    if (m_currentInput.isEmpty())
+    if (m_errorState || m_currentInput.isEmpty())
         return;
 
     bool ok = false;
@@ -272,4 +291,14 @@ void MainWindow::updateDisplay()
     // 顶部小字：显示"左操作数 + 操作符"的等待状态
     if (!m_pendingOperator.isEmpty())
         ui->labelExpression->setText(formatNumber(m_firstOperand) + " " + m_pendingOperator);
+}
+
+void MainWindow::showError(const QString &reason)
+{
+    m_errorState = true;
+    m_currentInput.clear();
+    m_pendingOperator.clear();
+    m_firstOperand = 0.0;
+    ui->labelExpression->setText(reason);      // 顶部小字提示错误原因
+    ui->lineEditDisplay->setText("错误");
 }

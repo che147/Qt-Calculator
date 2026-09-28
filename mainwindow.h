@@ -18,6 +18,7 @@ class QKeyEvent;
  *  - m_pendingOperator 待执行的操作符（"" 表示当前没有待运算的操作）
  *  - m_currentInput    当前正在输入的操作数（第二个操作数或刚输入的数字）
  *  - m_justEvaluated   刚按下"="的标志，用于决定后续输入是"继续运算"还是"开始新运算"
+ *  - m_errorState      错误状态（如除数为 0），进入后屏蔽运算类输入
  *
  * 鼠标按键与键盘输入统一转换为按键"标记"（如 "7"、"."、"⌫"），
  * 全部走同一个 processKey()，保证两种输入方式行为完全一致。
@@ -29,6 +30,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;   // 键盘事件入口
 
 private slots:
     void onButtonClicked();                          // 所有鼠标按钮的统一入口
@@ -49,6 +53,7 @@ private:
     QString formatNumber(double value) const;        // 结果格式化（去掉多余的 0）
     void updateDisplay();                            // 根据状态刷新显示
     double currentValue() const;                     // 当前屏幕上代表的数值
+    void showError(const QString &reason);           // 进入错误状态（除零等）
 
     Ui::MainWindow *ui;
 
@@ -56,6 +61,7 @@ private:
     QString m_pendingOperator;                       // "" / "+" / "-" / "×" / "÷"
     QString m_currentInput;                          // 正在输入的数字串（含小数点）
     bool    m_justEvaluated  = false;
+    bool    m_errorState     = false;                // 错误状态：进入后屏蔽运算类输入
 };
 
 #endif // MAINWINDOW_H
