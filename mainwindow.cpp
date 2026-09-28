@@ -20,6 +20,10 @@ MainWindow::MainWindow(QWidget *parent)
                 this, &MainWindow::onButtonClicked);
     }
 
+    // 显示框不参与焦点：否则键盘退格事件会被只读 QLineEdit 内部消费，
+    // 导致退格键失效；NoFocus 后键盘事件统一进入主窗口 keyPressEvent
+    ui->lineEditDisplay->setFocusPolicy(Qt::NoFocus);
+
     updateDisplay();
 }
 
@@ -187,6 +191,11 @@ void MainWindow::calculate()
         return;
 
     double second = currentValue();
+    if (m_pendingOperator == "÷" && second == 0.0) {
+        showError(QStringLiteral("除数不能为零"));
+        return;
+    }
+
     double a = m_firstOperand;
     double result = 0.0;
     if      (m_pendingOperator == "+") result = a + second;
